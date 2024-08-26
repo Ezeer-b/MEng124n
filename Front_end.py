@@ -1,170 +1,170 @@
 import streamlit as st
-import adding_matrices as am
-import product_matrices as pm
-import transpose_matrices as tm
-import inverse_matrices as im
-import determinant_matrices as dm
+import numpy as np
+from LE_backend import lu_decomposition
 
-st.sidebar.title('Matrix Calculator')
-choices = st.sidebar.selectbox('Select Option', ('Home', 'Matrix Calculator', 'About Me'))
+# Set page configuration
+st.set_page_config(page_title="Linear Equation Calculator", page_icon=":1234:", layout="centered")
 
+def solve_lu_decomposition(L, U, B):
+    n = len(B)
+    y = np.zeros(n)
+    x = np.zeros(n)
+
+    # Solve Ly = B
+    for i in range(n):
+        y[i] = B[i] - np.dot(L[i, :i], y[:i])
+
+    # Solve Ux = y
+    for i in range(n - 1, -1, -1):
+        x[i] = (y[i] - np.dot(U[i, i + 1:], x[i + 1:])) / U[i, i]
+
+    return x
+# Container for the title
+with st.container():
+    st.markdown(
+        "<h1 style='text-align: center; font-size: 80px; font-weight: bold; color: black;'>LINEAR CALCULATOR️</h1>",
+        unsafe_allow_html=True)
+
+# Divider line
+with st.container():
+    st.write("---")
+
+# Sidebar title with custom color
+sidebar_title_style = """
+    <style>
+    .sidebar .sidebar-content .sidebar-section .sidebar-header {
+        color: #3633FF;  
+    }
+    </style>
+"""
+st.markdown(sidebar_title_style, unsafe_allow_html=True)
+st.sidebar.title('Linear Calculator')
+
+# Sidebar options
+choices = st.sidebar.selectbox('Select Option', ('Home', 'Linear Equation Calculator', 'About app'))
+
+
+# Main content based on selected option
 if choices == 'Home':
     st.markdown("""
-                <h1 style="font-size: 40px; font-family: 'Arial, sans-serif'; text-align: center">
-                WELCOME TO MY WEBSITE!!
-                </h1>
-                <p style='text-align: center; font-size: 18px;'>A Coding Exercise in Advanced Mathematics.</p>
-            """, unsafe_allow_html=True)
-
-elif choices == 'Matrix Calculator':
-    st.write('Matrix Calculator')
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("""
-            <h1 style="font-size: 24px; font-family: 'Arial, sans-serif'; text-align: center">
-            Enter the size of the matrices:
-            </h1>
-        """, unsafe_allow_html=True)
-    with col2:
-        row = st.number_input("ROW:", min_value=1, max_value=5, key='row')
-    with col3:
-        column = st.number_input("COLUMN:", min_value=1, max_value=5, key='column')
-
-    col4, col5 = st.columns(2)
-    with col4:
-        st.markdown("""
-                <h1 style="font-size: 24px; font-family: 'Arial, sans-serif';">
-                Matrix A
-                </h1>
-            """, unsafe_allow_html=True)
-        for row_index in range(row):
-            columns = st.columns(column)
-            for col_index, col in enumerate(columns):
-                with col:
-                    st.text_input("", key=f'Arow{row_index + 1}Acol{col_index + 1}')
-
-    with col5:
-        st.markdown("""
-                    <h1 style="font-size: 24px; font-family: 'Arial, sans-serif';">
-                    Matrix B
+                    <h1 style="font-size: 45px; font-family: 'Arial, serif'; color:black; text-align: center">
+                    Welcome to my Linear Calculator Website!
                     </h1>
                 """, unsafe_allow_html=True)
-        for row_index in range(row):
-            columns = st.columns(column)
-            for col_index, col in enumerate(columns):
-                with col:
-                    st.text_input("", key=f'Brow{row_index + 1}Bcol{col_index + 1}')
+elif choices == 'Linear Equation Calculator':
 
-    operation = st.selectbox("Choose Operation", ["Addition", "Multiplication", "Transpose", "Inverse", "Determinant"])
-    matA = []
-    matB = []
-    for i in range(row):
-        rowSum = []
-        for j in range(column):
-            for value in st.session_state:
-                if value == f"Arow{i + 1}Acol{j + 1}":
-                    rowSum.append(st.session_state[value])
-        matA.append(rowSum)
+    def main():
+        st.markdown(
+            f"<div style='display: flex; align-items: center;'>"
+            f"<h1 style='center: 20px; font-size: 40px; font-weight: bold; color: black;'>LINEAR EQUATION CALCULATOR</h1>"
+            f"</div>",
+            unsafe_allow_html=True)
 
-    for i in range(row):
-        rowSum = []
-        for j in range(column):
-            for value in st.session_state:
-                if value == f"Brow{i + 1}Bcol{j + 1}":
-                    rowSum.append(st.session_state[value])
-        matB.append(rowSum)
+        st.write("---")
+        st.markdown("""
+                            <h1 style="font-size: 24px; font-family: 'Arial, sans-serif'; text-align: center; color: black">
+                            Input Number of Equations:
+                            </h1>
+                        """, unsafe_allow_html=True)
+        num_equations = st.number_input("", min_value=2, max_value=5)
 
-    calculate = st.button("Calculate Matrix", key='calculate_button')
-    if calculate:
-        try:
-            if operation == 'Addition':
-                calculating_matrix = am.adding_matrices(matA, matB)
-                st.success('Addition calculated successfully!')
-                col6, col7, col8 = st.columns(3)
-                with col7:
-                    for row_index in range(row):
-                        columns = st.columns(column)
-                        for col_index, col in enumerate(columns):
-                            with col:
-                                st.text_input("", value=calculating_matrix[row_index][col_index],
-                                              key=f'Rrow{row_index + 1}Rcol{col_index + 1}')
+        A = np.zeros((num_equations, num_equations))
+        B = np.zeros(num_equations)
 
-            elif operation == 'Multiplication':
-                calculating_matrix = pm.multiplying_matrices(matA, matB)
-                st.success('Multiplication calculated successfully!')
-                col6, col7, col8 = st.columns(3)
-                with col7:
-                    for row_index in range(row):
-                        columns = st.columns(column)
-                        for col_index, col in enumerate(columns):
-                            with col:
-                                st.text_input("", value=str(calculating_matrix[row_index][col_index]),
-                                              key=f'Rrow{row_index + 1}Rcol{col_index + 1}')
+        st.markdown(f"<h2 style='color: black; font-size: 25px;'> Enter Coefficients in each Equations:",
+                    unsafe_allow_html=True)
+        equation_columns = st.columns(num_equations)
+        for i in range(num_equations):
+            with equation_columns[i]:
+                st.markdown(f"<h2 style='color: black; font-size: 25px;'>EQUATION {i + 1}:</h2>",
+                            unsafe_allow_html=True)
+                for j in range(num_equations):
+                    coeff_title = f"Coefficient {i + 1},{j + 1}"
+                    A[i, j] = st.number_input(coeff_title, format="%f", key=f"A_{i}_{j}")
 
-            elif operation == 'Transpose':
-                calculating_matrix = tm.transpose_matrices(matA, matB)
-                st.success('Transposed Matrix calculated successfully!')
-                col8, col9 = st.columns(2)
-                with col8:
-                    for row_index in range(len(calculating_matrix)):
-                        columns = st.columns(len(calculating_matrix[0]))
-                        for col_index, col in enumerate(columns):
-                            with col:
-                                if row_index < len(calculating_matrix) and col_index < len(calculating_matrix[0]):
-                                    st.text_input("", value=calculating_matrix[row_index][col_index],
-                                                  key=f'Rrow{row_index + 5}Rcol{col_index + 5}', max_chars=2)
-                                else:
-                                    st.text_input("", value="Index out of range",
-                                                  key=f'Rrow{row_index + 5}Rcol{col_index + 5}', max_chars=2)
+        st.markdown(f"<h2 style='color: black; font-size: 25px;'> Enter Constants:",
+                    unsafe_allow_html=True)
+        for i in range(num_equations):
+            const_title = f"Constant {i + 1}"
+            B[i] = st.number_input(const_title, format="%f", key=f"b_{i}")
 
-            elif operation == 'Inverse':
-                calculating_matrices = im.inverse_matrices(matA, matB)
-                if calculating_matrices is not None and len(calculating_matrices) == 2 and all(
-                        matrix is not None for matrix in calculating_matrices):
-                    calculating_matrixA, calculating_matrixB = calculating_matrices
-                    st.success('Inverse Matrix calculated successfully!')
-                    col6, col7 = st.columns(2)
-                    with col6:
-                        for row_index in range(len(calculating_matrixA)):
-                            for col_index in range(len(calculating_matrixA[row_index])):
-                                st.text_input("", value=str(calculating_matrixA[row_index][col_index]),
-                                              key=f'A_{row_index + 1}Acol{col_index + 1}')
-                    with col7:
-                        for row_index in range(len(calculating_matrixB)):
-                            for col_index in range(len(calculating_matrixB[row_index])):
-                                st.text_input("", value=str(calculating_matrixB[row_index][col_index]),
-                                              key=f'B_{row_index + 1}Bcol{col_index + 1}')
-                else:
-                    st.error("Ensure matrices are invertible.")
+        if st.button("Calculate"):
+            L, U = lu_decomposition(A)
+            roots = solve_lu_decomposition(L, U, B)
 
-            elif operation == "Determinant":
-                calculating_matrices = dm.determinant_matrix(matA, matB)
-                if calculating_matrices is not None and len(calculating_matrices) == 2 and all(
-                        matrix is not None for matrix in calculating_matrices):
-                    determinant_A, determinant_B = calculating_matrices
-                    st.success('Determinant Matrix calculated successfully!')
-                    st.write(f'Determinant of Matrix A: {determinant_A}')
-                    st.write(f'Determinant of Matrix B: {determinant_B}')
-                else:
-                    st.error("Error: Determinants calculation failed.")
+            st.markdown("""
+                                        <h1 style="font-size: 25px; font-family: 'Arial, sans-serif'; text-align: center; color: black">
+                                        STEP-BY-STEP SOLUTION:
+                                        </h1>
+                                        """, unsafe_allow_html=True)
+            st.markdown("<div style='display:flex; justify-content:center;'>", unsafe_allow_html=True)
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown(f"<h2 style='color: black; font-size: 25px;'> LOWER TRIANGULAR MATRIX:",
+                            unsafe_allow_html=True)
+                st.write(np.round(L, 2))
+            with col2:
+                st.markdown(f"<h2 style='color: black; font-size: 25px;'> UPPER TRIANGULAR MATRIX:",
+                            unsafe_allow_html=True)
+                st.write(np.round(U, 2))
+            st.markdown("</div>", unsafe_allow_html=True)
 
-        except ValueError as e:
-            st.error(f"Error: {str(e)}")
-        except Exception as e:
-            st.error("An unexpected error occurred. Please check your input.")
+            st.markdown(f"<h2 style='color: black; font-size: 25px;'> SOLUTIONS:",
+                        unsafe_allow_html=True)
+            for i, root in enumerate(roots):
+                st.markdown(f"<h3 style='color: black;'>X<sub>{i + 1}</sub>: {root}</h3>", unsafe_allow_html=True)
+
+
+    if __name__ == "__main__":
+        main()
+
 else:
+    st.sidebar.markdown("""
+        <div style="bottom: 0; width: 100%; background-color: lightblue; text-align: justify; padding: 10px;">
+            <p>This website was created by two students from the Department of Mechanical Engineering at Visayas State University during the second semester of the S.Y. 2023-2024 as a coding exercise for the subject MEng124n - Advanced Mathematics. It serves as a calculator capable of solving linear equations using LU Decomposition.</p>
+        </div>
+    """, unsafe_allow_html=True)
+
     st.markdown("""
-        ## Hello, I'm Brian Ezer T. Pelostratos - BSME III
+                <h1 style='text-align: center; font-size: 44px; font-weight: bold; color: black ;'>About Us</h1>
+            """, unsafe_allow_html=True)
 
+    st.markdown(f"""
+        <div style="display: flex; justify-content: center;">
+            <div style="text-align: left;">
+                <h1 style='font-size: 24px; font-weight: bold; color: black;'>Brian Ezer T. Pelostratos</h1>
+                <a href="https://www.facebook.com/brian.pelostratos">
+                </a>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-        ### You can contact me via ff:
-        - Email: brianpelostratos@gmail.com
-        - Phone: 09971604504
+    st.markdown("""
+                    <h1 style='text-align: left; font-size: 24px; font-weight: bold; color: black ;'>
+                    Education: Visayas State Univerity</h1>
+                    <h1 style='text-align: left; font-size: 24px; font-weight: bold; color: black ;'>
+                    Course & Year: 3rd Year - BS in Mechanical Engineering</h1>
+                    <h1 style='text-align: left; font-size: 24px; font-weight: bold; color: black ;'>
+                    Contact No: 09971604504 </h1>
 
-        ### Connect with Me via Facebook
-        - https://www.facebook.com/brian.pelostratos
+                """, unsafe_allow_html=True)
 
-
-        For more inquiries, kindly use the information above. Thank you.
-        """)
+footer_style = """
+        <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+        </style>
+"""
+footer_content = """
+        <div class="footer">
+            © 2024 MEng124n | BETP
+        </div>
+"""
+st.markdown(footer_style + footer_content, unsafe_allow_html=True)
