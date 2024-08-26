@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MEng-124n: Calculator and Converter</title>
+    <style>
+        /* Style for the header background */
+        .header-background {
+            background-color: rgba(0, 0, 139, 0.7); /* Dark blue color with transparency */
+            padding: 10px 20px; /* Padding for spacing */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-bottom: 30px;
+            position: fixed; /* Make the header fixed */
+            width: 100%; /* Ensure it spans the full width of the page */
+            top: 0; /* Position it at the top */
+            z-index: 1000; /* Ensure it stays above other elements */
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 70px; /* Increased size of the images */
+            margin-right: 15px; /* Increased space between images */
+        }
+        .nav-links {
+            text-align: right;
+            padding-right: 30px; /* Added right padding to move links away from the scrollbar */
+        }
+        .nav-links a {
+            font-size: 18px;
+            text-decoration: none;
+            color: #fff; /* White color for the navigation links */
+            margin: 0 15px;
+            transition: font-size 0.3s ease;
+        }
+        .nav-links a:hover {
+            font-size: 24px;
+        }
+        .welcome-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            margin: 100px auto 0 auto; /* Added top margin to avoid overlap with fixed header */
+            width: 80%;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border-radius: 15px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .description-container {
+            text-align: center;
+            margin-top: 40px; /* Increased space above the description */
+            background-color: rgba(255, 255, 255, 0.8); /* White background with similar opacity */
+            padding: 20px; /* Padding inside the container */
+            border-radius: 10px; /* Rounded corners for smooth effect */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            width: 80%; /* Ensure it matches the width of other containers */
+            margin: 40px auto; /* Center the container horizontally */
+            transition: transform 0.3s ease; /* Smooth transition for scaling */
+        }
+        .description-container:hover {
+            transform: scale(1.05); /* Slightly enlarges the container on hover */
+        }
+        .main-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            width: 80%;
+            margin: 20px auto; /* Center the container horizontally */
+        }
+        .description-box {
+            text-align: justify; /* Justify text alignment */
+            background-color: rgba(255, 255, 255, 0.8); /* White background with similar opacity */
+            padding: 20px; /* Padding inside the container */
+            border-radius: 10px; /* Rounded corners for smooth effect */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            transition: transform 0.3s ease; /* Smooth transition for scaling */
+            line-height: 1.5; /* Line height for spacing */
+            margin-bottom: 50px; /* Add space between the boxes */
+        }
+        .description-box:nth-of-type(1),
+        .description-box:nth-of-type(3) {
+            width: 48%; /* Half width for the first and third descriptions */
+            margin-right: 4%; /* Space to the right for alignment */
+        }
+        .description-box:nth-of-type(2) {
+            width: 48%; /* Half width for the Matrix Calculator */
+            margin-left: auto; /* Align to the right */
+            margin-right: 0; /* Remove right margin */
+        }
+        .description-box:hover {
+            transform: scale(1.05); /* Slightly enlarges the container on hover */
+            z-index: 1; /* Ensures the hovered container is above others */
+        }
+        .description-box:not(:hover) {
+            transform: scale(0.95); /* Shrinks non-hovered containers */
+        }
+        .description {
+            font-size: 16px; /* Adjusted for better readability */
+            color: #000;
+            margin: 0; /* Remove default margin */
+        }
+    </style>
+</head>
+<body background="2.jpg" link="#000" alink="#017bf5" vlink="000">
+    <br />
+    <div class="header-background">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="3.png" alt="Logo Image 1">
+                <img src="4.png" alt="Logo Image 2">
+            </div>
+            <div class="nav-links">
+                <a href="#">HOME</a>
+                <a href="#">MENG 124n</a>
+                <a href="#">PORTFOLIO</a>
+                <a href="#">CONTACT</a>
+            </div>
+        </div>
+    </div>
+    <br /><br /><br /><br /><br /><br /><br />
+    <div class="welcome-container">
+        <h1>
+            <font face="Times New Roman" color="#000" size="7">
+                WELCOME TO MY WEBPAGE
+            </font>
+        </h1>
+        <h3>
+            <font face="Calibri" color="000" size="5">
+                A website that integrates mathematical formulas into useful applications.
+            </font>
+        </h3>
+    </div>
+    <br />
+    <div class="button-container">
+        <a href="#" class="button">GET STARTED</a>
+    </div>
+    <div class="description-container">
+        <p class="description">
+            Discover the amazing features of our calculator and converter tools. Get started now to make your calculations easier and more efficient!
+        </p>
+    </div>
+    <div class="main-wrapper">
+        <div class="description-box">
+            <p class="description">
+                Decimal to Binary Converter<br><p></p>
+                Our Decimal to Binary Converter tool allows you to easily convert decimal numbers into their binary equivalents. Whether you’re a student learning about number systems, a developer needing quick conversions, or simply curious about binary numbers, this tool simplifies the process. Enter any decimal number, and the converter will instantly provide you with the binary representation, making it easy to understand and work with binary data.
+            </p>
+        </div>
+        <div class="description-box">
+            <p class="description">
+                Matrix Calculator<br><p></p>
+                Our Matrix Calculator tool is designed to simplify operations on matrices. Whether you’re dealing with addition, subtraction, multiplication, or finding the determinant of matrices, this tool can handle it efficiently. Perfect for students and professionals alike, this calculator allows you to input matrices of various sizes and perform complex calculations with ease. Enter your matrices, choose the desired operation, and get instant results to streamline your mathematical tasks and enhance your understanding of matrix operations.
+            </p>
+        </div>
+        <div class="description-box">
+            <p class="description">
+                Linear Equation Calculator<br><p></p>
+                Our Linear Equation Calculator provides a straightforward way to solve systems of linear equations. Whether you’re dealing with two variables or more complex scenarios, this tool helps you find solutions quickly and accurately. Ideal for students, engineers, and anyone working with linear equations, it simplifies the process of solving equations by allowing you to input coefficients and constants directly. The calculator then provides the solution set, helping you to solve problems with ease and confidence.
+            </p>
+        </div>
+    </div>
+    <br /><br /><br /><br /><br /><br />
+    <h3 align="center">
+        <font face="Times" size="3"></font>
+        <a href="#">FOLLOW ME</a>
+    </h3>
+</body>
+</html>
